@@ -2,7 +2,7 @@
 session_start(); // Start the session to access session variables
 include("../db.php"); // Include the database connection
 if(!isset($_SESSION['loggedin'])){
-    header("location:login.php");
+    header("location:../login.php");
     exit();
 }
 $id=$_SESSION['supplier_id'];
@@ -24,10 +24,25 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="css/templatemo-style.css">
     <style>
         .tm-product-edit-icon-large {
-            font-size: 1.5em; /* Adjust size as needed */
-            color: #007bff; /* Change color if desired */
+            font-size: 1.5em;
+            color: #007bff;
         }
     </style>
+    <script>
+        function validatePhoneNumber() {
+            const phoneInput = document.getElementById('nbr');
+            const phoneNumber = phoneInput.value;
+
+            // Regular expression to match 078, 079, 072, or 073 followed by 7 digits
+            const phoneRegex = /^(078|079|072|073)\d{7}$/;
+
+            if (!phoneRegex.test(phoneNumber)) {
+                alert("Phone number must start with 078, 079, 072, or 073 and be exactly 10 digits long.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 
 <body id="reportsPage">
@@ -77,14 +92,12 @@ $result = $conn->query($sql);
         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
             <div class="tm-bg-primary-dark tm-block tm-block-products">
                 <div class="tm-product-table-container">
-                    <!-- Display Success/Error Messages -->
                     <?php if (isset($_GET['msg'])): ?>
                         <div class="alert alert-info">
                             <?= htmlspecialchars($_GET['msg']); ?>
                         </div>
                     <?php endif; ?>
 
-                    <!-- Table Form for Selecting Products -->
                     <form method="POST" action="delete-product.php">
                         <table class="table table-hover tm-table-small tm-product-table">
                             <thead>
@@ -99,7 +112,6 @@ $result = $conn->query($sql);
                             </thead>
                             <tbody>
                             <?php
-                            // Check if there are products and display them
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     echo '<tr>';
@@ -123,19 +135,15 @@ $result = $conn->query($sql);
                             ?>
                             </tbody>
                         </table>
-
-                        <!-- Delete Selected Products Button -->
                         <button type="submit" class="btn btn-primary btn-block text-uppercase mb-3" name="delete_selected">Delete selected products</button>
                     </form>
                 </div>
-                <!-- Trigger for Modal -->
                 <button type="button" class="btn btn-success btn-block text-uppercase mb-3" data-toggle="modal" data-target="#paymentModal">Add new product</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Payment Form Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -146,14 +154,10 @@ $result = $conn->query($sql);
                 </button>
             </div>
             <div class="modal-body">
-                <form action="process-payment.php" method="POST">
+                <form action="process-payment.php" method="POST" onsubmit="return validatePhoneNumber()">
                     <div class="form-group">
                         <label for="nbr">Phone Number</label>
-                        <input type="text" class="form-control" id="nbr" name="phone_number" placeholder="Shyiramo nimero" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">Amount</label>
-                        <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
+                        <input type="number" class="form-control" id="nbr" name="phone_number" placeholder="Shyiramo nimero" required>
                     </div>
                     <button type="submit" class="btn btn-success mt-3 w-100">Make Payment</button>
                 </form>
@@ -165,8 +169,7 @@ $result = $conn->query($sql);
 <footer class="tm-footer row tm-mt-small">
     <div class="col-12 font-weight-light">
         <p class="text-center text-white mb-0 px-4 small">
-            Copyright &copy; <b>2018</b> All rights reserved.
-            Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Template Mo</a>
+            Copyright &copy; <b>2024 Farticonnect. </b> All rights reserved.
         </p>
     </div>
 </footer>

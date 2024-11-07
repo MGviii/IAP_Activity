@@ -8,7 +8,7 @@ $result = $conn->query($sql);
 
 
 
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,12 +19,20 @@ $result = $conn->query($sql);
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --plant-green: #2e8b57;
+            /* More natural forest green */
+            --plant-green-dark: #1f593a;
+            --plant-green-light: #3cb371;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             background: linear-gradient(to right, #28a745, #4CAF50);
             color: white;
+            height: 100%;
         }
 
         /* Transparent Navbar Styles */
@@ -35,12 +43,14 @@ $result = $conn->query($sql);
             z-index: 10;
             padding: 15px 0;
             transition: background-color 0.3s ease;
-            background-color: transparent; /* No background initially */
+            background-color: transparent;
+            /* No background initially */
         }
 
         /* Background color on scroll */
         .scroll-active {
-            background-color: rgba(0, 0, 0, 0.85); /* Set the background color when scrolling */
+            background-color: var(--plant-green-dark);
+            /* Set the background color when scrolling */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -51,7 +61,7 @@ $result = $conn->query($sql);
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-            height:4px;
+            height: 4px;
         }
 
         .logo h1 {
@@ -165,7 +175,7 @@ $result = $conn->query($sql);
 
         .carousel img {
             width: 100%;
-            height: 600px;
+            height: 1000px;
             object-fit: cover;
             min-width: 100%;
         }
@@ -179,7 +189,7 @@ $result = $conn->query($sql);
             text-align: center;
             color: white;
             background-color: rgba(0, 0, 0, 0.6);
-            padding: 30px;
+            padding: 100px;
             border-radius: 15px;
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
         }
@@ -214,207 +224,194 @@ $result = $conn->query($sql);
 
         /* Product Section Styles */
         .products-section {
-    padding: 50px 20px;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.products-section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #fff;
-}
-
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.product-item {
-    background-color: #fff;
-    color: #000;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    height: 300px; /* Set a fixed height for all product items */
-    display: flex;
-    flex-direction: column; /* Align content vertically */
-    justify-content: space-between; /* Space between image and title/button */
-}
-
-.product-item img {
-    width: 100%;
-    height: 150px; /* Set a consistent height */
-    object-fit: cover; /* Ensures the image covers the area without stretching */
-    border-radius: 8px;
-    margin-bottom: 10px; /* Space between image and title */
-}
-
-.product-item h3 {
-    margin: 15px 0 10px;
-    font-size: 1.3rem;
-    color: #28a745;
-}
-
-/* Hover effect */
-.product-item:hover {
-    transform: scale(1.05); /* Slightly enlarge on hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
-}
-
-/* Button Styles */
-.btn {
-    padding: 12px 30px;
-    background-color: #28a745; /* Green background */
-    color: white; /* White text */
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    text-decoration: none; /* Remove underline */
-    display: inline-block; /* Align properly */
-}
-
-.btn:hover {
-    background-color: #218838; /* Darker green on hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-        /* Navigation Buttons */
-        .prev, .next {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            width: auto;
-            padding: 16px;
-            margin-top: -22px;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            transition: 0.6s ease;
-            border-radius: 0 3px 3px 0;
-            user-select: none;
-            background-color: rgba(0, 0, 0, 0.5);
+            padding: 50px 20px;
+            text-align: center;
+            background-color: var(--plant-green-light);
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .next {
-            right: 0;
-            border-radius: 3px 0 0 3px;
+        .products-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #fff;
         }
 
-        .prev:hover, .next:hover {
-            background-color: rgba(0, 0, 0, 0.8);
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
+        .product-item {
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 300px;
+            /* Set a fixed height for all product items */
+            display: flex;
+            flex-direction: column;
+            /* Align content vertically */
+            justify-content: space-between;
+            /* Space between image and title/button */
+        }
+
+        .product-item img {
+            width: 100%;
+            height: 150px;
+            /* Set a consistent height */
+            object-fit: cover;
+            /* Ensures the image covers the area without stretching */
+            border-radius: 8px;
+            margin-bottom: 10px;
+            /* Space between image and title */
+        }
+
+        .product-item h3 {
+            margin: 15px 0 10px;
+            font-size: 1.3rem;
+            color: #28a745;
+        }
+
+        /* Hover effect */
+        .product-item:hover {
+            transform: scale(1.05);
+            /* Slightly enlarge on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            /* Enhance shadow on hover */
+        }
+
+        /* Button Styles */
         .btn {
-    padding: 12px 30px;
-    background-color: #28a745; /* Green background */
-    color: white; /* White text */
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    text-decoration: none; /* Remove underline */
-    display: inline-block; /* Align properly */
-}
+            padding: 12px 30px;
+            background-color: var(--plant-green-dark);
+            /* Green background */
+            color: white;
+            /* White text */
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+            /* Remove underline */
+            display: inline-block;
+            /* Align properly */
+        }
 
-.btn:hover {
-    background-color: #218838; /* Darker green on hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-}
+        .btn:hover {
+            background-color: #218838;
+            /* Darker green on hover */
+            transform: scale(1.05);
+            /* Slightly enlarge on hover */
+        }
+          /* Button Styles */
+          .bton {
+            margin-top: 2%;
+            margin-left: 1000px;
+            padding: 12px 30px;
+            background-color: var(--plant-green-dark);
+            /* Green background */
+            color: white;
+            /* White text */
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+            /* Remove underline */
+            display: inline-block;
+            /* Align properly */
+        }
+        .bton:hover {
+            text-decoration: none;
+            background-color: #218838;
+            color: #000;
+            /* Darker green on hover */
+            transform: scale(1.05);
+            /* Slightly enlarge on hover */
+        }
+        .who-we-are{
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #f1f1f1;
+            background-color: var(--plant-green-dark);
+            padding: 40px 0;
+            text-align: center;
+        }
+        .h22 {
+            
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            margin-bottom: 10px;
+        }
 
+        .p1 {
+            color: #ccc;
+            margin: 10px 0;
+        }
 
-/* General Styles */
-footer {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    color: #f1f1f1;
-    background-color: #1a1a1a;
-    padding: 60px 0;
-}
+        
+        /* Footer Styling */
+        footer {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #f1f1f1;
+            background-color: var(--plant-green-dark);
+            padding: 40px 0;
+            text-align: center;
+        }
 
-footer a.footer-link {
-    color: #f1f1f1;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 5px 10px; /* Add some padding for better clickable area */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+        footer h5 {
+            color: #ffc107;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            margin-bottom: 10px;
+        }
 
-footer a.footer-link:hover {
-    color: #1a1a1a; /* Change text color */
-    background-color: #ffc107; /* Change background color */
-    text-decoration: none; /* Remove underline */
-}
+        footer p {
+            color: #ccc;
+            margin: 10px 0;
+        }
 
-/* Section Text Alignment */
-footer .footer-section {
-    text-align: left;
-}
+        .footer-links {
+            margin: 15px 0;
+        }
 
-/* Center alignment for sections that need it */
-footer .footer-section.text-center {
-    text-align: center;
-}
+        .footer-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
 
-/* Newsletter Input */
-footer .input-group .form-control {
-    background-color: #333;
-    color: white;
-    border-radius: 5px 0 0 5px;
-    border: none;
-    padding: 10px;
-    transition: background-color 0.3s ease;
-}
+        .footer-link:hover {
+            color: #1a1a1a;
+        }
 
-footer .input-group .form-control::placeholder {
-    color: #ccc; /* Placeholder text color */
-}
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .footer-flex {
+                flex-direction: column;
+            }
 
-footer .input-group .form-control:focus {
-    background-color: #444;
-    outline: none;
-}
-
-footer .input-group button {
-    background-color: #ffc107;
-    border: none;
-    color: #333;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-footer .input-group button:hover {
-    background-color: #e0a800;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .footer-flex {
-        flex-direction: column;
-    }
-
-    .footer-section {
-        margin-bottom: 30px;
-    }
-}
-
-
-
-
-
-
-
-
+            .footer-section {
+                margin-bottom: 30px;
+                text-align: center;
+                /* Center text on smaller screens */
+            }
+        }
     </style>
 </head>
 
@@ -429,9 +426,11 @@ footer .input-group button:hover {
                 <button class="navbar-toggler" onclick="toggleMenu()">☰</button>
                 <ul class="nav-links">
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="supplier.php">Supplier</a></li>
-                    <li><a href="about.php">About Us</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="supplier.php">Traders</a></li>
+                    <li><a href="fertilizer.php">Fertilizers</a></li>
+                    <li><a href="supplierdashboard/products.php">Trader Dashboard</a></li>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="register.php">Register</a></li>
                 </ul>
             </nav>
         </header>
@@ -445,118 +444,67 @@ footer .input-group button:hover {
             </div>
 
             <div class="carousel-content">
-                <h2>Connecting Farmers with Fertilizer Suppliers</h2>
-                <p>Find the best fertilizers for your crops and connect with suppliers near you.</p>
-                
+                <h2>Connecting Farmers with Fertilizer Traders</h2>
+                <p>Find the best fertilizers for your crops and connect with traders near you.</p>
+
             </div>
         </section>
-
+        <section class="who-we-are">
+            <h2 class="h22">Who We are</h2>
+            <div id="about" class="about-grid">
+                <p class="p1">
+                We are committed to improving agriculture by bridging the gap between farmers and fertilizer traders. Our mission is.....<a href="about.php">Read more</a>
+                </p>
+            </div>
+        </section>
+            
         <!-- Our Products Section -->
-<section class="products-section">
-    <h2>The Fertilizers</h2>
-    <div class="products-grid">
-    <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+        <section class="products-section">
+            <h2>The Fertilizers</h2>
+            <div id="products" class="products-grid">
+                <?php
+                error_reporting(E_ALL);
+                ini_set('display_errors', 1);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $productName = $row["name"];
-        $productImagePath = $row["filePath"];
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $productName = $row["name"];
+                        $productImagePath = $row["filePath"];
 
-        // Check if the filePath already contains 'uploads/'
-        if (strpos($productImagePath, 'uploads/') === false) {
-            $productImagePath = 'uploads/' . $productImagePath;
-        }
+                        // Check if the filePath already contains 'uploads/'
+                        if (strpos($productImagePath, 'uploads/') === false) {
+                            $productImagePath = 'uploads/' . $productImagePath;
+                        }
 
-        // Debugging output to check the image path
-        // echo '<p>Image Path: ' . htmlspecialchars($productImagePath) . '</p>';
+                        // Debugging output to check the image path
+                        // echo '<p>Image Path: ' . htmlspecialchars($productImagePath) . '</p>';
 
-        // Display product and image
-        echo '<div class="product-item">';
-        echo '<img src="' . htmlspecialchars($productImagePath) . '" alt="Product Image" width="300" height="300">';
-        echo '<h3>' . htmlspecialchars($productName) . '</h3>';
-        echo '<a href="product-details.php?id=' . htmlspecialchars($row["id"]) . '" class="btn">View More</a>';
-        echo '</div>';
-    }
-} else {
-    echo "<p>No products found.</p>";
-}
-?>
+                        // Display product and image
+                        echo '<div class="product-item">';
+                        echo '<img src="' . htmlspecialchars($productImagePath) . '" alt="Product Image" width="300" height="300">';
+                        echo '<h3>' . htmlspecialchars($productName) . '</h3>';
+                        echo '<a href="product-details.php?id=' . htmlspecialchars($row["id"]) . '" class="btn">Check Info</a>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo "<p>No products found.</p>";
+                }
+                ?>
 
-    </div>
-</section>
-
-
-<footer style="background-color: #1a1a1a; padding: 60px 0; color: #f1f1f1; font-family: Arial, sans-serif;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <div class="footer-flex" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px;">
-
-            <!-- About Section (FertiConnect) -->
-            <div class="footer-section" style="flex: 1 1 300px; text-align: left;">
-                <h5 style="color: #ffc107; font-size: 20px; font-weight: bold;">FertiConnect</h5>
-                <p style="line-height: 1.8;">FertiConnect is your go-to platform for connecting farmers and fertilizer suppliers. Our mission is to empower farmers by providing easy access to high-quality fertilizers from trusted suppliers.</p>
             </div>
-
-            <!-- Quick Links -->
-            <div class="footer-section" style="flex: 1 1 150px; text-align: left;">
-                <h5 style="color: #ffc107; font-size: 20px; font-weight: bold;">Quick Links</h5>
-                <ul style="list-style: none; padding: 0;">
-                    <li><a href="#" class="footer-link">Home</a></li>
-                    <li><a href="#" class="footer-link">Products</a></li>
-                    <li><a href="#" class="footer-link">Suppliers</a></li>
-                    <li><a href="#" class="footer-link">Blog</a></li>
-                    <li><a href="#" class="footer-link">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <!-- Categories -->
-            <div class="footer-section" style="flex: 1 1 150px; text-align: left;">
-                <h5 style="color: #ffc107; font-size: 20px; font-weight: bold;">Categories</h5>
-                <ul style="list-style: none; padding: 0;">
-                    <li><a href="#" class="footer-link">Organic Fertilizers</a></li>
-                    <li><a href="#" class="footer-link">Nitrogen Fertilizers</a></li>
-                    <li><a href="#" class="footer-link">Phosphate Fertilizers</a></li>
-                    <li><a href="#" class="footer-link">Potash Fertilizers</a></li>
-                    <li><a href="#" class="footer-link">Custom Mix</a></li>
-                </ul>
-            </div>
-
-            <!-- Newsletter -->
-            <div class="footer-section" style="flex: 1 1 300px; text-align: center;">
-                <h5 style="color: #ffc107; font-size: 20px; font-weight: bold;">Subscribe to Our Newsletter</h5>
-                <form class="input-group" style="display: flex; justify-content: center; gap: 0;">
-                    <input type="email" class="form-control" placeholder="Enter your email" style="flex: 1; max-width: 250px; padding: 10px; border: none; border-radius: 5px 0 0 5px; outline: none;">
-                    <button type="submit" style="background-color: #ffc107; border: none; color: #1a1a1a; padding: 10px 20px; border-radius: 0 5px 5px 0; cursor: pointer;" >Subscribe</button>
-                </form>
-                <p style="margin-top: 10px; color: #ccc;">Stay updated with the latest offers and farming tips.</p>
-            </div>
+            <a href="fertilizer.php" class="bton">View More</a>
+        </section>
+        <footer id="footer">
+        <h5>FertiConnect</h5>
+        <p>FertiConnect is your go-to platform for connecting farmers and fertilizer traders. Our mission is to empower farmers by providing easy access to high-quality fertilizers from trusted traders.</p>
+        <div class="footer-links">
+            <a href="index.php" class="footer-link">Home</a> |
+            <a href="fertilizer.php" class="footer-link">Fertilizers</a> |
+            <a href="supplier.php" class="footer-link">Traders</a> |
+            <a href="#" class="footer-link">Contact Us</a>
         </div>
-
-        <hr style="border-top: 1px solid #555; margin: 40px 0;">
-
-        <!-- Social Links & Footer Bottom -->
-        <div class="footer-flex" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 40px;">
-            <!-- Social Links -->
-            <p style="color: #ccc;">&copy; 2024 FertiConnect. All rights reserved.</p>
-
-            <!-- Footer Navigation -->
-            <div class="footer-section" style="flex: 1 1 200px; text-align: center;">
-                <ul class="list-inline" style="margin: 0; padding: 0;">
-                    <li class="list-inline-item"><a href="#" class="footer-link">Privacy Policy</a></li>
-                    <li class="list-inline-item"><a href="#" class="footer-link">Terms & Conditions</a></li>
-                    <li class="list-inline-item"><a href="#" class="footer-link">FAQs</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</footer>
-
-
-
-
-
-
+        <p>&copy; 2024 FertiConnect. All rights reserved.</p>
+    </footer>
         <!-- Script for Navbar and Carousel -->
         <script>
             const nav = document.querySelector('header');

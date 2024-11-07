@@ -8,7 +8,7 @@ $product_id = $_GET['id']; // Assuming you have a way to pass the product ID dyn
 // SQL query to get the product and supplier details
 $sql = "
     SELECT p.name AS product_name, p.description AS product_description, p.filePath AS product_image,p.price AS price,
-           s.name AS supplier_name, s.address AS supplier_location, s.email AS supplier_email, s.contact_details AS supplier_phone
+           s.name AS supplier_name, s.address AS supplier_location, s.email AS supplier_email, s.phone AS supplier_phone
     FROM products p
     INNER JOIN suppliers s ON p.supplier_id = s.id
     WHERE p.id = ?
@@ -53,6 +53,12 @@ $conn->close();
     <title><?php echo htmlspecialchars($product['name']); ?> - Fertilizer Details</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+         :root {
+            --plant-green: #2e8b57;
+            /* More natural forest green */
+            --plant-green-dark: #1f593a;
+            --plant-green-light: #3cb371;
+        }
         * {
             box-sizing: border-box;
         }
@@ -64,13 +70,13 @@ $conn->close();
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f4f4f4;
+            background-color: var(--plant-green-light);
         }
 
         .close-button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #3498db;
+            background-color: var(--plant-green-dark);
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -83,7 +89,7 @@ $conn->close();
         }
 
         header {
-            background-color: #3498db;
+            background-color: var(--plant-green-dark);
             color: white;
             text-align: center;
             padding: 1em;
@@ -202,7 +208,7 @@ $conn->close();
 
     <div class="product-container">
         <div class="product-image-container">
-            <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
+        <img src="<?php echo 'uploads/' . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
         </div>
         <div class="product-details">
             <div class="product-info-section">

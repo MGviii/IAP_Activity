@@ -2,48 +2,77 @@
 session_start();
 require('db.php');
 
-$error="";
+$error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Get input values
-  $email = htmlspecialchars(trim($_POST['email']));
-  $password = htmlspecialchars(trim($_POST['password']));
+    // Get input values
+    $identifier = htmlspecialchars(trim($_POST['identifier'])); // Can be email or phone
+    $password = htmlspecialchars(trim($_POST['password']));
 
-  // Basic validation
-  if (empty($email) || empty($password)) {
-    $error="All fields are required.";
-  }
-
-  // Check if email exists in the selected table
-  $sql = "SELECT * FROM suppliers WHERE email = ?";
-  $stmt = $conn->prepare($sql);
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $result = $stmt->get_result();
-
-  if ($result->num_rows > 0) {
-    // Fetch user data
-    $user = $result->fetch_assoc();
-
-    // Verify password
-    if (password_verify($password, $user['password'])) {
-      // Successful login, redirect to appropriate dashboard
-      $_SESSION['supplier_name'] = $user['name'];
-      $_SESSION['email'] = $user['email'];
-      $_SESSION['supplier_id'] = $user['id'];
-      $_SESSION['loggedin'] = true;
-      header("Location: supplierdashboard/products.php");
-      exit();
+    // Basic validation
+    if (empty($identifier) || empty($password)) {
+        $error = "All fields are required.";
     } else {
-      $error="Incorrect password.";
-    }
-  } else {
-    $error="No user found with the email in the suppliers table.";
-  }
+        // Function to validate phone number (accepts formats like +1234567890, 1234567890)
+        function isValidPhone($phone) {
+            // Remove any non-digit characters except leading +
+            $cleanPhone = preg_replace('/[^\d+]/', '', $phone);
+            // Check if it starts with + and has 10-15 digits, or just has 10-15 digits
+            return preg_match('/^\+?\d{10,15}$/', $cleanPhone);
+        }
 
-  // Close connection
-  $stmt->close();
-  $conn->close();
+        // Function to validate email
+        function isValidEmail($email) {
+            return filter_var($email, FILTER_VALIDATE_EMAIL);
+        }
+
+        // Determine if input is email or phone
+        $isEmail = isValidEmail($identifier);
+        $isPhone = isValidPhone($identifier);
+
+        if (!$isEmail && !$isPhone) {
+            $error = "Please enter a valid email address or phone number.";
+        } else {
+            // Prepare the SQL query based on input type
+            if ($isEmail) {
+                $sql = "SELECT * FROM suppliers WHERE email = ?";
+            } else {
+                // Clean phone number to consistent format
+                $identifier = preg_replace('/[^\d+]/', '', $identifier);
+                $sql = "SELECT * FROM suppliers WHERE phone = ?";
+            }
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $identifier);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                // Fetch user data
+                $user = $result->fetch_assoc();
+
+                // Verify password
+                if (password_verify($password, $user['password'])) {
+                    // Successful login, set session variables
+                    $_SESSION['supplier_name'] = $user['name'];
+                    $_SESSION['email'] = $user['email'];
+                    $_SESSION['supplier_id'] = $user['id'];
+                    $_SESSION['loggedin'] = true;
+                    header("Location: supplierdashboard/products.php");
+                    exit();
+                } else {
+                    $error = "Incorrect password.";
+                }
+            } else {
+                $error = "No user found with the provided " . ($isEmail ? "email" : "phone number") . ".";
+            }
+
+            // Close statement
+            $stmt->close();
+        }
+    }
+    // Close connection
+    $conn->close();
 }
 ?>
 
@@ -60,18 +89,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 0;
         }
 
+        :root {
+            --plant-green: #2e8b57; /* More natural forest green */
+            --plant-green-dark: #1f593a;
+            --plant-green-light: #3cb371;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: var(--plant-green-light);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
         header {
-            background-color: #28a745;
+            background-color: var(--plant-green-dark);
             color: #fff;
             padding: 1rem 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -87,29 +122,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
             font-weight: 700;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
+            gap: 1.5rem;
         }
 
         .nav-links li {
-            margin-left: 20px;
+            margin: 0;
         }
 
         .nav-links a {
             color: #fff;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #ffc107;
+            color: #c5e1a5;
         }
 
         main {
@@ -117,44 +153,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: clamp(1rem, 5vw, 2rem);
         }
 
         .card {
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-            overflow: hidden;
+            width: min(100%, 400px);
+            margin: 0 auto;
         }
 
         .card-header {
-            background-color: #28a745;
+            background-color: var(--plant-green);
             color: #fff;
             padding: 1.5rem;
             text-align: center;
         }
 
         .card-body {
-            padding: 2rem;
+            padding: clamp(1.5rem, 5vw, 2rem);
         }
 
         form {
             display: flex;
             flex-direction: column;
+            gap: 1rem;
         }
 
         input {
-            margin-bottom: 1rem;
+            width: 100%;
             padding: 0.8rem;
-            border: 1px solid #ddd;
+            border: 2px solid #e0e0e0;
             border-radius: 5px;
             font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--plant-green);
         }
 
         button {
-            background-color: #28a745;
+            background-color: var(--plant-green);
             color: #fff;
             padding: 0.8rem;
             border: none;
@@ -162,41 +204,90 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             cursor: pointer;
             font-size: 1rem;
             transition: background-color 0.3s ease;
+            margin-top: 0.5rem;
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: var(--plant-green-dark);
         }
 
         .form-footer {
             margin-top: 1rem;
             text-align: center;
+            font-size: 0.9rem;
         }
 
         .form-footer a {
-            color: #28a745;
+            color: var(--plant-green);
             text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            color: var(--plant-green-dark);
         }
 
         footer {
-            background-color: #333;
+            background-color: var(--plant-green-dark);
             color: #fff;
             text-align: center;
-            padding: 1rem 0;
+            padding: 1rem;
             margin-top: auto;
+            font-size: clamp(0.8rem, 3vw, 1rem);
+        }
+
+        .error {
+            color: #d32f2f;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Mobile menu styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            transition: 0.3s;
         }
 
         @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
             .nav-links {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--plant-green);
+                flex-direction: column;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
             }
 
             .card {
-                max-width: 100%;
+                margin: 0 1rem;
             }
         }
-        .error{
-            color:red;
+        .input-hint {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -206,11 +297,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="logo">
                 <h1>FertiConnect</h1>
             </div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About</a></li>
                 <li><a href="contact.php">Contact</a></li>
-                <li><a href="login.php">Login</a></li>
+                <li><a href="register.php">Register</a></li>
             </ul>
         </nav>
     </header>
@@ -222,9 +318,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="card-body">
                 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="text" id="identifier" name="identifier" placeholder="Enter your email or phone number" required>
+                    <div class="input-hint">Enter either your email address or phone number (e.g., 0781111111)</div>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    <br>
                     <span class="error"><?php echo $error; ?></span>
                     <button type="submit">Login</button>
                     <div class="form-footer">
@@ -239,5 +335,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <footer>
         <p>&copy; 2024 FertiConnect. All rights reserved.</p>
     </footer>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>

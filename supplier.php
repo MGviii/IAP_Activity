@@ -1,22 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Suppliers</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Traders Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to right, #28a745, #4CAF50);
-            color: white;
+         :root {
+            --plant-green: #2e8b57;
+            /* More natural forest green */
+            --plant-green-dark: #1f593a;
+            --plant-green-light: #3cb371;
         }
 
-        header {
+        body, html {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            background-color: #002500;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        
+       /* Transparent Navbar Styles */
+       header {
             position: fixed;
             top: 0;
             width: 100%;
@@ -27,7 +38,7 @@
         }
 
         .scroll-active {
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: var(--plant-green-dark);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -87,242 +98,346 @@
             color: #4CAF50;
         }
 
-        .suppliers-section {
-            padding: 100px 20px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.1);
-            margin-top: 60px;
-            position: relative;
+        .navbar-toggler {
+            display: none;
         }
 
-        .supplier-action {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                background-color: rgba(0, 0, 0, 0.95);
+                top: 0;
+                right: 0;
+                width: 70%;
+                height: 100vh;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                display: none;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 20px 0;
+            }
+
+            .navbar-toggler {
+                display: block;
+                background-color: white;
+                color: #28a745;
+                border: none;
+                cursor: pointer;
+                font-size: 1.8rem;
+                padding: 10px;
+                margin-left: auto;
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
         }
 
-        /* Button Styles */
-        .supplier-action .btn {
-            padding: 12px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .carousel-container {
+            width: 100%;
             overflow: hidden;
-            z-index: 1;
-            animation: shine 25s infinite alternate; /* Animation added here */
+            position: relative;
+            margin-top: 0;
         }
 
-        /* Animation Keyframes */
-        @keyframes shine {
-            0% {
-                background-color: yellowgreen; /* Original color */
-            }
-            20% {
-                background-color: olivedrab; /* Light green */
-                color: black;
-            }
-            40% {
-                background-color: #b8e0a5; /* Pale green */
-                color: black;
-            }
-            60% {
-                background-color: #4CAF50; /* Standard green */
-            }
-            80% {
-                background-color: #a5d99f; /* Another shade of green */
-                color: black;
-            }
-            100% {
-                background-color: orangered; /* Original color */
-            }
+        .carousel {
+            display: flex;
+            transition: transform 0.8s ease-in-out;
         }
 
-        .supplier-action .btn:hover {
-            background-color: #218838;
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        .carousel img {
+            width: 100%;
+            height: 700px;
+            object-fit: cover;
+            min-width: 100%;
         }
 
-        .suppliers-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            color: #fff;
+        .carousel-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 100px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel-content p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .content {
+            text-align: center;
+            margin: 20px;
+            flex: 1;
+            padding: 20px;
         }
 
         .supplier-card {
-            background-color: #fff;
-            color: #000;
+            background-color: #f5f5f5;
+            color: #333;
+            border: none;
+            margin: 10px;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 15px;
-            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-view-products {
+            background-color: #00b300;
+            color: white;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: bold;
             display: inline-block;
-            width: 250px;
+            margin-top: 10px;
         }
 
-        .supplier-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .supplier-card h3 {
-            margin: 10px 0;
-            font-size: 1.5rem;
-            color: #28a745;
-        }
-
-        .supplier-card p {
-            font-size: 1rem;
-        }
-
+        /* Enhanced Pagination Styling */
         .pagination {
-            margin-top: 30px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            margin: 40px 0;
+            gap: 5px;
+            margin-left: 400px;
         }
 
-        .pagination a {
-            padding: 10px 15px;
-            margin: 0 5px;
-            background-color: #fff;
-            color: #28a745;
-            border-radius: 5px;
+        .pagination .page-item .page-link {
+            color: var(--plant-green);
+            background-color: white;
+            border: 2px solid var(--plant-green);
+            padding: 8px 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination .page-item:not(.disabled):hover .page-link {
+            background-color: var(--plant-green-light);
+            color: white;
+            border-color: var(--plant-green-light);
+            transform: translateY(-2px);
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--plant-green);
+            border-color: var(--plant-green);
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #f5f5f5;
+            border-color: #ddd;
+            color: #999;
+        }
+
+        .pagination .page-link:focus {
+            box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.25);
+            outline: none;
+        }
+
+        @media (max-width: 576px) {
+            .pagination .page-link {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+            
+            .pagination {
+                gap: 3px;
+            }
+        }
+
+        /* Footer Styling */
+        footer {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #f1f1f1;
+            background-color: var(--plant-green-dark);
+            padding: 40px 0;
+            text-align: center;
+            position: sticky;
+        }
+
+        footer h5 {
+            color: #ffc107;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #ccc;
+            margin: 10px 0;
+        }
+
+        .footer-links {
+            margin: 15px 0;
+        }
+
+        .footer-link {
+            color: #fff;
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
         }
 
-        .pagination a:hover {
-            background-color: #e9e9e9;
+        .footer-link:hover {
+            color: #1a1a1a;
         }
 
-        .pagination span {
-            padding: 10px 15px;
-            margin: 0 5px;
-            color: #28a745;
-        }
+        @media (max-width: 768px) {
+            .footer-flex {
+                flex-direction: column;
+            }
 
-        .view-products-btn {
-            padding: 12px 20px; /* Adjust padding as needed */
-            background-color: #28a745; /* Use the same background color as the other buttons */
-            color: white; /* Text color */
-            border-radius: 25px; /* Same border radius */
-            text-decoration: none; /* No underline */
-            display: inline-block; /* Align it like a button */
-            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions */
-        }
-
-        .view-products-btn:hover {
-            background-color: #218838; /* Darker green on hover */
-            transform: scale(1.05); /* Scale up effect */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            .footer-section {
+                margin-bottom: 30px;
+                text-align: center;
+            }
         }
     </style>
 </head>
-
 <body>
-    <div class="homepage-content">
-        <!-- Navigation Bar -->
-        <header id="header">
-            <nav>
-                <div class="logo">
-                    <h1>FertiConnect</h1>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="supplier.php">Suppliers</a></li>
-                    <li><a href="about.php">About Us</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
+    <!-- Navigation Bar -->
+    <header id="header">
+        <nav>
+            <div class="logo">
+                <h1>FertiConnect</h1>
+            </div>
+            <button class="navbar-toggler" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="supplier.php">Traders</a></li>
+                <li><a href="fertilizer.php">Fertilizers</a></li>
+                <li><a href="supplierdashboard/products.php">Trader Dashboard</a></li>
+                <li><a href="login.php">Login</a></li>
+                <li><a href="register.php">Register</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <!-- Suppliers Section -->
-        <section class="suppliers-section">
-            <h2>Our Suppliers</h2>
+    <!-- Carousel Section -->
+    <section id="home" class="carousel-container">
+        <div class="carousel" id="carousel">
+            <img src="fertilizer-bg.jpg" alt="Fertilizer Banner">
+        </div>
+        <div class="carousel-content">
+            <p>Do you want to join our Platform of fertilizer traders community? <a href="#">Register Here</a></p>
+        </div>
+    </section>
 
-            <!-- Action Button for Register/Login -->
-            <div class="supplier-action">
-                <a href="login.php" class="btn">Register or Login as Supplier</a>
+    <!-- Content -->
+    <div class="content">
+        <h5>These are the Fertilizer traders that offer the best fertilizer for different crops</h5>
+        <div class="container">
+            <div class="row">
+                <?php
+                include 'db.php';
+
+                $suppliersPerPage = 8;
+                $totalSuppliersQuery = "SELECT COUNT(*) AS total FROM suppliers";
+                $totalSuppliersResult = $conn->query($totalSuppliersQuery);
+                $totalSuppliersRow = $totalSuppliersResult->fetch_assoc();
+                $totalSuppliers = $totalSuppliersRow['total'];
+
+                $totalPages = ceil($totalSuppliers / $suppliersPerPage);
+                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $currentPage = max(1, min($currentPage, $totalPages));
+                $startIndex = ($currentPage - 1) * $suppliersPerPage;
+
+                $suppliersQuery = "SELECT id, name, description FROM suppliers LIMIT $startIndex, $suppliersPerPage";
+                $suppliersResult = $conn->query($suppliersQuery);
+
+                if ($suppliersResult->num_rows > 0) {
+                    while ($row = $suppliersResult->fetch_assoc()) {
+                        echo '<div class="col-sm-6 col-md-3">';
+                        echo '<div class="supplier-card">';
+                        echo '<h3>' . htmlspecialchars($row['name']) . '</h3>';
+                        echo '<p>' . htmlspecialchars($row['description']) . '</p>';
+                        echo '<a href="view_details.php?supplier_id=' . $row['id'] . '" class="btn-view-products">View Our Products</a>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<div class="col-12 text-center"><p>No suppliers found.</p></div>';
+                }
+                ?>
             </div>
 
-            <?php
-            // Include the database connection file
-            include 'db.php';
+            <!-- Pagination -->
+            <?php if ($totalPages > 1): ?>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item <?php echo $currentPage <= 1 ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="?page=<?php echo $currentPage - 1; ?>" <?php echo $currentPage <= 1 ? 'tabindex="-1" aria-disabled="true"' : ''; ?>>Previous</a>
+                            </li>
+                            
+                            <?php
+                            for ($i = max(1, $currentPage - 1); $i <= min($totalPages, $currentPage + 1); $i++): ?>
+                                <li class="page-item <?php echo $i === $currentPage ? 'active' : ''; ?>">
+                                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                </li>
+                            <?php endfor; ?>
 
-            // Pagination setup
-            $suppliersPerPage = 10;
-            $totalSuppliersQuery = "SELECT COUNT(*) AS total FROM suppliers"; 
-            $totalSuppliersResult = $conn->query($totalSuppliersQuery);
-            $totalSuppliersRow = $totalSuppliersResult->fetch_assoc();
-            $totalSuppliers = $totalSuppliersRow['total'];
-
-            $totalPages = ceil($totalSuppliers / $suppliersPerPage);
-            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
-            // Validate current page
-            if ($currentPage < 1) {
-                $currentPage = 1;
-            } elseif ($currentPage > $totalPages) {
-                $currentPage = $totalPages;
-            }
-
-            // Calculate the starting index for suppliers on the current page
-            $startIndex = ($currentPage - 1) * $suppliersPerPage;
-
-            // Query suppliers for the current page
-            $suppliersQuery = "SELECT id,name, description FROM suppliers LIMIT $startIndex, $suppliersPerPage";
-            $suppliersResult = $conn->query($suppliersQuery);
-
-            // Display supplier cards for the current page
-            if ($suppliersResult->num_rows > 0) {
-                while ($row = $suppliersResult->fetch_assoc()) {
-                    
-                    echo '<div class="supplier-card">';
-                    echo '<h3>' . htmlspecialchars($row['name']) . '</h3>';
-                    echo '<p>' . htmlspecialchars($row['description']) . '</p>';
-                    echo '<a href="view_details.php?supplier_id=' . $row['id'] . '" class="view-products-btn btn">View Our Products</a>';
-
-
-                    
-                    echo '</div>';
-                }
-            } else {
-                echo '<p>No suppliers found.</p>';
-            }
-
-            // Pagination Links
-            echo '<div class="pagination">';
-            for ($i = 1; $i <= $totalPages; $i++) {
-                if ($i === $currentPage) {
-                    echo '<span>' . $i . '</span>';
-                } else {
-                    echo '<a href="?page=' . $i . '">' . $i . '</a>';
-                }
-            }
-            echo '</div>';
-
-            // Close the database connection
-            $conn->close();
-            ?>
-        </section>
+                            <li class="page-item <?php echo $currentPage >= $totalPages ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="?page=<?php echo $currentPage + 1; ?>" <?php echo $currentPage >= $totalPages ? 'tabindex="-1" aria-disabled="true"' : ''; ?>>Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
     </div>
 
+    <footer id="footer">
+        <h5>FertiConnect</h5>
+        <p>FertiConnect is your go-to platform for connecting farmers and fertilizer traders. Our mission is to empower farmers by providing easy access to high-quality fertilizers from trusted traders.</p>
+        <div class="footer-links">
+            <a href="index.php" class="footer-link">Home</a> |
+            <a href="fertilizer.php" class="footer-link">Products</a> |
+            <a href="supplier.php" class="footer-link">Traders</a> |
+            <a href="#" class="footer-link">Contact Us</a>
+        </div>
+        <p>&copy; 2024 FertiConnect. All rights reserved.</p>
+    </footer>
+
     <script>
-        // Change header style on scroll
-        window.addEventListener('scroll', function () {
+        // Add scroll event listener for navbar background
+        window.addEventListener('scroll', function() {
             const header = document.getElementById('header');
-            header.classList.toggle('scroll-active', window.scrollY > 0);
+            if (window.scrollY > 50) {
+                header.classList.add('scroll-active');
+            } else {
+                header.classList.remove('scroll-active');
+            }
         });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
     </script>
 </body>
-
 </html>

@@ -4,73 +4,266 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forget Password</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --plant-green: #2e8b57; /* More natural forest green */
+            --plant-green-dark: #1f593a; /* Darker green */
+            --plant-green-light: #3cb371; /* Lighter green */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: var(--plant-green-dark);
+            color: #fff;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo h1 {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-links li {
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #c5e1a5;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--plant-green-light); /* Light plant green */
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0; /* Space above and below */
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem; /* Added padding inside the card */
+            border: 2px solid var(--plant-green); /* Green border */
+        }
+
+        h2 {
+            color: var(--plant-green); /* Title color */
+            margin-bottom: 1rem; /* Space below the title */
+            text-align: center; /* Center the title */
+        }
+
+        label {
+            font-weight: 600; /* Bold labels */
+            margin-bottom: 0.5rem; /* Space below labels */
+            display: block; /* Make labels block level */
+        }
+
+        button {
+            background-color: var(--plant-green); /* Plant green */
+            color: #fff;
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            align-self: flex-end;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: var(--plant-green-dark); /* Darker green on hover */
+        }
+
+        input {
+            width: 100%; /* Full width */
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: var(--plant-green); /* Green border on focus */
+            outline: none; /* Remove default outline */
+        }
+        footer {
+            background-color: var(--plant-green-dark);
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+            font-size: clamp(0.8rem, 3vw, 1rem);
+        }
+        .error {
+            color: #d32f2f;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Mobile menu styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 768px) {
+          .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--plant-green);
+                flex-direction: column;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+            .card {
+                padding: 1.5rem; /* Less padding on smaller screens */
+                margin: 0 1rem
+            }
+
+            button {
+                width: 100%; /* Full width button */
+            }
+        }
+    </style>
 </head>
-<style>
-     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem 0; /* Add padding to create space above and below */
-    }
-    .card {
-      background-color: #fff;
-      border-radius: 5px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-    
-    button {
-      background-color: green;
-      color: #fff;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-      align-self: flex-end;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    input{
-        width: 200px;
-        margin-bottom: 1rem;
-        padding: 0.5rem;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-    }
-
-</style>
 <body>
+  <header>
+    <nav>
+        <div class="logo">
+            <h1>FertiConnect</h1>
+        </div>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="about.php">About</a></li>
+            <li><a href="contact.php">Contact</a></li>
+            <li><a href="login.php">Login</a></li>
+        </ul>
+    </nav>
+</header>
     <main>
         <div class="card">
-    <form action="forget.php" method="post">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" placeholder="Andika imeri yawe"><br><br>
-        <label for="new">New Password</label>
-        <input type="password" name="password" placeholder="Andika umubare banga mushya"><br><br>
-        <label for="confirm">Comfirm Your Password</label>
-        <input type="password" name="confirm" placeholder="Subiramo umubare banga mushya"><br><br>
-        <button type="submit" name="subimit" id="submit">Subimit / Emeza</button>
-
-    </form>
-    </div>
+            <h2>Forget Password</h2>
+            <form action="forget.php" method="post">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Andika imeri yawe" required><br>
+                
+                <label for="new">New Password</label>
+                <input type="password" name="password" id="new" placeholder="Andika umubare banga mushya" required><br>
+                
+                <label for="confirm">Confirm Your Password</label>
+                <input type="password" name="confirm" id="confirm" placeholder="Subiramo umubare banga mushya" required><br>
+                
+                <button type="submit" name="submit" id="submit">Subimit / Emeza</button>
+            </form>
+        </div>
     </main>
+    <footer >
+        <div class="container" >
+            <div class="footer-flex">
+
+                <!-- About Section (FertiConnect) -->
+                <div class="footer-section" >
+                    <h5 style="color: #ffc107; font-size: 20px; font-weight: bold;">FertiConnect</h5>
+                    <p >FertiConnect is your go-to platform for connecting farmers and fertilizer suppliers. Our mission is to empower farmers by providing easy access to high-quality fertilizers from trusted suppliers.</p>
+                </div>
+
+               
+
+
+                <hr style="border-top: 1px solid #555; margin: 40px 0;">
+
+                <!-- Social Links & Footer Bottom -->
+                <div class="footer-flex" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 40px;">
+                     <!-- Quick Links -->
+                   <div class="footer-section">
+                    <ul style="list-style: none; padding: 0;display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 40px;">
+                        <li><a href="#" class="footer-link">Home</a></li>
+                        <li><a href="#" class="footer-link">Products</a></li>
+                        <li><a href="#" class="footer-link">Traders</a></li>
+                        <li><a href="#" class="footer-link">Contact Us</a></li>
+                    </ul>
+                  </div>
+                    <p style="color: #ccc;">&copy; 2024 FertiConnect. All rights reserved.</p>
+                </div>
+            </div>
+    </footer>
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+</script>
 </body>
 </html>

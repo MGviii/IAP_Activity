@@ -15,6 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("All fields are required.");
     }
 
+    // Validate phone number format
+    if (!preg_match('/^(07[2389])[0-9]{7}$/', $contact_details)) {
+        die("Invalid phone number. Phone number must start with 072, 073, 078, or 079 and be 10 digits long.");
+    }
+
     // Check for existing email
     $sql = "SELECT * FROM suppliers WHERE email = ?";
     $stmt = $conn->prepare($sql);
@@ -54,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert into database
-    $sql = "INSERT INTO suppliers (name, email, password, contact_details, address, logo, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO suppliers (name, email, password, phone, address, logo, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssssss", $name, $email, $hashed_password, $contact_details, $address, $logo_path, $description);
 
@@ -79,17 +84,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        :root {
+            --plant-green: #2e8b57;
+            --plant-green-dark: #1f593a;
+            --plant-green-light: #3cb371;
+        }
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: var(--plant-green-light);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         header {
-            background-color: #28a745;
+            background-color: var(--plant-green-dark);
             color: #fff;
             padding: 1rem 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -145,8 +155,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .form-header h2 {
+            color: var(--plant-green-dark);
             font-size: 24px;
-            color: #343a40;
         }
 
         .form-footer {
@@ -155,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .btn-custom {
-            background-color: #28a745;
+            background-color: var(--plant-green-dark);
             color: white;
             border: none;
         }
@@ -173,6 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-control {
             border-radius: 8px;
         }
+        
         .form-footer {
             margin-top: 1rem;
             text-align: center;
@@ -184,13 +195,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         footer {
-            background-color: #333;
+            background-color: var(--plant-green-dark);
             color: #fff;
             text-align: center;
             padding: 1rem 0;
             margin-top: auto;
         }
-
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -199,9 +209,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </style>
+    <script>
+        function validatePhone(input) {
+            const phoneNumber = input.value.trim();
+            const phoneRegex = /^(07[2389])[0-9]{7}$/;
+            const errorElement = document.getElementById('phone-error');
+            
+            if (!phoneRegex.test(phoneNumber)) {
+                errorElement.textContent = "Phone number must start with 072, 073, 078, or 079 and be 10 digits long";
+                input.setCustomValidity("Invalid phone number format");
+            } else {
+                errorElement.textContent = "";
+                input.setCustomValidity("");
+            }
+        }
+    </script>
 </head>
 <body>
-<header>
+    <header>
         <nav>
             <div class="logo">
                 <h1>FertiConnect</h1>
@@ -210,8 +235,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About</a></li>
                 <li><a href="contact.php">Contact</a></li>
-                <li><a href="supplier.php">Suppliers</a></li>
+                <li><a href="supplier.php">Traders</a></li>
                 <li><a href="login.php">Login</a></li>
+                <li><a href="register.php">Register</a></li>
             </ul>
         </nav>
     </header>
@@ -240,8 +266,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
 
                         <div class="mb-3">
-                            <label for="contact_details" class="form-label">Contact Details</label>
-                            <input type="text" class="form-control" id="contact_details" name="contact_details" placeholder="Enter your contact details" required>
+                            <label for="contact_details" class="form-label">Phone Number</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="contact_details" 
+                                   name="contact_details" 
+                                   placeholder="Enter your phone number (e.g., 0781234567)" 
+                                   pattern="^(07[2389])[0-9]{7}$"
+                                   oninput="validatePhone(this)"
+                                   required>
+                            <div id="phone-error" class="text-danger"></div>
+                            <small class="form-text text-muted">Phone number must start with 072, 073, 078, or 079 and be 10 digits long</small>
                         </div>
 
                         <div class="mb-3">
@@ -269,8 +304,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-<footer>
+    <footer>
         <p>&copy; 2024 FertiConnect. All rights reserved.</p>
     </footer>
+</body>
 </html>
